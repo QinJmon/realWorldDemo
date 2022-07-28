@@ -1,0 +1,55 @@
+type Query{
+    me:User
+}
+
+
+type Mutation{
+    createUser(input:CreateUserInput):UserResult
+    login(password:String!,email:String!):UserPayload
+    updateUser(changes:UpdateUserInput!):UserPayload
+
+}
+
+union UserResult=UserPayload | Error
+
+input CreateUserInput{
+    email:String!
+    username:String!
+    password:String!
+}
+input UpdateUserInput{
+    username:String
+    email:String
+    password:String
+    bio:String
+    images:String
+}
+
+type UserPayload{
+    #操作？？？？？不加操作返回查询不到user
+    user:User
+}
+type User{
+    username:String!
+    email:String!
+    #获得形象描述
+    profile:Profile!
+    token:String!
+}
+#形象描述
+type Profile{
+    username:String!
+    bio:String
+    following:Boolean!
+    image:String
+
+
+}
+type Error{
+    message:String
+    errors:[ErrorItem!]
+}
+type ErrorItem{
+    key:String!
+    value:[String!]
+}
