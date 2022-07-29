@@ -1,5 +1,9 @@
 type Query{
     me:User
+#根据用户名查看用户描述信息（可以看到当前登陆的用户是否关注了名为username的用户）
+    profile(username:String!):ProfilePayload
+    #得到所有的tags
+    tags:[Tag]
 }
 
 
@@ -7,6 +11,10 @@ type Mutation{
     createUser(input:CreateUserInput):UserResult
     login(password:String!,email:String!):UserPayload
     updateUser(changes:UpdateUserInput!):UserPayload
+#    将当前登陆用户关注名称为username的用户
+    followUser(username:String!):ProfilePayload
+#    当前登陆用户取消关注名称为username的用户
+    unfollowUser(username:String!):ProfilePayload
 
 }
 
@@ -45,6 +53,16 @@ type Profile{
 
 
 }
+type ProfilePayload{
+    profile:Profile
+}
+
+type Tag{
+   id:ID
+    name:String
+}
+
+
 type Error{
     message:String
     errors:[ErrorItem!]

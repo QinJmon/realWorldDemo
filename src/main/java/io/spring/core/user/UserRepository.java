@@ -16,4 +16,10 @@ public interface UserRepository {
     Optional<User> findByUsername(String username);
 
     Optional<User> findById(String id);
+
+    void saveRelation(FollowRelation followRelation);
+
+    Optional<FollowRelation> findRelation(String userId,String targetId);
+
+    void removeRelation(FollowRelation followRelation);
 }

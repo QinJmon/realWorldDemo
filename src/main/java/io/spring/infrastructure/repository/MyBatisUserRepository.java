@@ -1,5 +1,6 @@
 package io.spring.infrastructure.repository;
 
+import io.spring.core.user.FollowRelation;
 import io.spring.core.user.User;
 import io.spring.core.user.UserRepository;
 import io.spring.infrastructure.mybatis.mapper.UserMapper;
@@ -48,5 +49,27 @@ public class MyBatisUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(String id) {
         return Optional.ofNullable(userMapper.findById(id));
+    }
+
+    @Override
+    public void saveRelation(FollowRelation followRelation) {
+        //当当前登陆用户id和目标用户没有关联时，保存两者的关系？？
+        if(!findRelation(followRelation.getUserId(),followRelation.getTargetId()).isPresent()){
+            userMapper.saveRelation(followRelation);
+        }
+
+    }
+
+    @Override
+    public Optional<FollowRelation> findRelation(String userId, String targetId) {
+        return Optional.ofNullable(userMapper.findByRelation(userId,targetId));
+    }
+
+    @Override
+    public void removeRelation(FollowRelation followRelation) {
+        //当两者有关系的时候才去解除关系
+        if(findRelation(followRelation.getUserId(),followRelation.getTargetId()).isPresent()){
+            userMapper.deleteRelation(followRelation);
+        }
     }
 }
